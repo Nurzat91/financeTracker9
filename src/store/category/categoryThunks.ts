@@ -30,3 +30,10 @@ export const fetchCategory = createAsyncThunk<GetCategories[], undefined, {dispa
     return newData;
   }
 );
+
+export const deleteCategory = createAsyncThunk<void, string>(
+  'categories/delete',
+  async (categoriesId) => {
+    await axiosApi.delete(`/categories/${categoriesId}.json`);
+  }
+);

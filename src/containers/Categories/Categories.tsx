@@ -2,10 +2,17 @@ import React, {useEffect, useState} from "react";
 import Modal from "../../components/Modal/Modal";
 import {GetCategories, SelectTypes} from "../../types";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {createCategory, fetchCategory} from "../../store/category/categoryThunks";
-import {getCategories, getCategoriesLoading, modalPostLoading} from "../../store/category/categorySlice";
+import {createCategory, deleteCategory, fetchCategory} from "../../store/category/categoryThunks";
+import {
+  deleteCategoriesLoading,
+  getCategories,
+  getCategoriesLoading,
+  modalPostLoading
+} from "../../store/category/categorySlice";
 import Spinner from "../../components/Spinner/Spinner";
 import {Link} from "react-router-dom";
+import btnDelete from '../../assets/btnDelete.svg';
+import btnEdit from '../../assets/btnEdit.svg';
 
 const Categories = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +24,7 @@ const Categories = () => {
   const modalLoading = useAppSelector(modalPostLoading);
   const getDatacategories = useAppSelector(getCategories);
   const loading = useAppSelector(getCategoriesLoading);
+  const deleteLoading = useAppSelector(deleteCategoriesLoading);
 
   const changeDish = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setSelect((prev) => ({
@@ -37,6 +45,11 @@ const Categories = () => {
   useEffect(() => {
     dispatch(fetchCategory());
   }, [dispatch]);
+
+  const removeCategory = async (id: string) => {
+    await dispatch(deleteCategory(id));
+    await dispatch(fetchCategory());
+  }
 
   return (
     <>
@@ -76,7 +89,7 @@ const Categories = () => {
           <button className="btn btn-danger" onClick={() => setShowModal(false)}>Cancel</button>
           <button className="btn btn-success"
                   onClick={saveSubmit}
-                  disabled={modalLoading}
+                  disabled={modalLoading || !select.name || !select.type}
           >Save</button>
         </div>
       </Modal>
@@ -84,15 +97,15 @@ const Categories = () => {
         <div key={data.id} className="card p-2 my-3 d-flex flex-row align-items-center">
           <div className="w-50 ms-5 text-capitalize fs-5">{data.name}</div>
           <div className="w-25 fs-5 fw-semibold">{data.type}</div>
-          <Link to={'/' + data.id} className="btn btn-light">Edit</Link>
+          <Link to={'/'} className="btn btn-light"><img src={btnEdit} alt="btn Edit" /></Link>
           <button
             type="button"
             className="btn btn-light mx-4"
-            // onClick={() => onDelete(data.id)}
-            // disabled={removeLoading ? removeLoading === data.id : false}
+            disabled={deleteLoading ? deleteLoading === data.id : false}
+            onClick={() => removeCategory(data.id)}
           >
-            {/*{removeLoading && removeLoading === data.id && (<Spinner/>)}*/}
-            Delete
+            {deleteLoading && deleteLoading === data.id && (<Spinner/>)}
+            <img src={btnDelete} alt="btn Delete" />
           </button>
         </div>
       ))}

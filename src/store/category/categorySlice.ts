@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {GetCategories, SelectTypes} from "../../types";
-import {createCategory, fetchCategory} from "./categoryThunks";
+import {createCategory, deleteCategory, fetchCategory} from "./categoryThunks";
 import {RootState} from "../../app/store";
 
 
@@ -9,6 +9,7 @@ interface AddState{
   modalValue: SelectTypes | null;
   getCategoriesLoading: boolean;
   categories: GetCategories[];
+  deleteLoading: false | string;
 }
 
 const initialState: AddState = {
@@ -16,6 +17,7 @@ const initialState: AddState = {
   modalValue: null,
   getCategoriesLoading: false,
   categories: [],
+  deleteLoading: false,
 }
 
 export const categoriesSlice = createSlice({
@@ -43,6 +45,17 @@ export const categoriesSlice = createSlice({
     builder.addCase(fetchCategory.rejected, (state) => {
       state.getCategoriesLoading = false;
     });
+
+    builder.addCase(deleteCategory.pending, (state, {meta}) => {
+      state.deleteLoading = meta.arg;
+    });
+    builder.addCase(deleteCategory.fulfilled, (state) => {
+      state.deleteLoading = false;
+    });
+    builder.addCase(deleteCategory.rejected, (state) => {
+      state.deleteLoading = false;
+      state.getCategoriesLoading = false;
+    });
   }
 });
 
@@ -50,3 +63,4 @@ export const categoriesReducer = categoriesSlice.reducer;
 export const getCategories = (state: RootState) => state.categories.categories;
 export const modalPostLoading = (state: RootState) => state.categories.modalLoading;
 export const getCategoriesLoading = (state: RootState) => state.categories.getCategoriesLoading;
+export const deleteCategoriesLoading = (state: RootState) => state.categories.deleteLoading;
