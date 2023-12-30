@@ -1,31 +1,39 @@
+
 const Add = () => {
   return (
     <div className="card p-3">
       <form>
-        <h4>Add Income/Expense</h4>
-        <div className="form-group">
-          <label htmlFor="name">Type</label>
-          <input
-            type="text"
-            name="type"
-            id="type"
-            className="form-control"
-            required
-          />
-        </div>
-        <div className="form-group my-2">
-          <label>Select page</label>
+        <h4 className="my-3 border-bottom">Add Income/Expense</h4>
+        <div className="form-group d-flex">
+          <label style={{width: "99px"}} htmlFor="name">Type</label>
           <select
-            name="select" required
+            name="type" required
+            // value={select.type}
+            // onChange={changeDish}
           >
-            <option value="" disabled>
-              Время приема пищи:
+            <option disabled value="">
+              Тип категории
             </option>
-            <option value=""></option>
+            <option value="Income ">Income </option>
+            <option value="Expense ">Expense </option>
           </select>
         </div>
-        <div className="form-group">
-          <label htmlFor="price">Amount</label>
+        <div className="form-group my-3 d-flex">
+          <label style={{width: "100px"}} htmlFor="name">Category</label>
+          <select
+            name="type" required
+            // value={select.type}
+            // onChange={changeDish}
+          >
+            <option disabled value="">
+              Тип категории
+            </option>
+            <option value="Income ">Income </option>
+            <option value="Expense ">Expense </option>
+          </select>
+        </div>
+        <div className="form-group d-flex">
+          <label style={{width: "113px"}} htmlFor="price">Amount</label>
           <input
             type="number"
             name="amount"
@@ -33,14 +41,16 @@ const Add = () => {
             className="form-control"
             required
           />
+          <span className="border rounded p-2">KGS</span>
         </div>
-
-        {/*<button type="submit" className="btn btn-primary mt-2" disabled={isLoading}>*/}
-        {/*  Cancel*/}
-        {/*</button>*/}
-        {/*<button type="submit" className="btn btn-primary mt-2" disabled={isLoading}>*/}
-        {/*  Save*/}
-        {/*</button>*/}
+        <div className="d-flex justify-content-end mt-3">
+          <button type="submit" className="btn btn-primary" >
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-primary mx-3">
+            Save
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -25,6 +25,8 @@ const Categories = () => {
   const getDatacategories = useAppSelector(getCategories);
   const loading = useAppSelector(getCategoriesLoading);
   const deleteLoading = useAppSelector(deleteCategoriesLoading);
+  const incomeCategories = ["salary", "bonus", "interest on deposits"];
+  const expenseCategories = ["food", "taxi", "drinks", "relax"];
 
   const changeDish = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setSelect((prev) => ({
@@ -32,6 +34,60 @@ const Categories = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+
+  const removeCategory = async (id: string) => {
+    await dispatch(deleteCategory(id));
+    await dispatch(fetchCategory());
+  }
+
+  const selectCategories = () => {
+    if (select.type === "Income ") {
+      return (
+        <select
+          name="name"
+          className="form-control"
+          required
+          value={select.name}
+          onChange={changeDish}
+        >
+          <option disabled value="">
+            Тип категории
+          </option>
+          {incomeCategories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      );
+    } else if (select.type === "Expense ") {
+      return (
+        <select
+          name="name"
+          className="form-control"
+          required
+          value={select.name}
+          onChange={changeDish}
+        >
+          <option disabled value="">
+            Тип категории
+          </option>
+          {expenseCategories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchCategory());
+  }, [dispatch]);
 
   const saveSubmit = () => {
     dispatch(createCategory(select));
@@ -42,15 +98,6 @@ const Categories = () => {
     })
   };
 
-  useEffect(() => {
-    dispatch(fetchCategory());
-  }, [dispatch]);
-
-  const removeCategory = async (id: string) => {
-    await dispatch(deleteCategory(id));
-    await dispatch(fetchCategory());
-  }
-
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
@@ -60,7 +107,7 @@ const Categories = () => {
       <Modal show={showModal} title="Add categories">
         <div className="modal-body">
           <div>
-            <label style={{width: "100px"}} htmlFor="name">Select page</label>
+            <label style={{width: "140px"}} htmlFor="name">Type:</label>
             <select
               name="type" required
               value={select.type}
@@ -74,15 +121,8 @@ const Categories = () => {
             </select>
           </div>
           <div className="d-flex flex-row my-3">
-            <label style={{width: "127px"}} htmlFor="name">Name</label>
-            <input
-              type="text"
-              name="name"
-              className="form-control"
-              required
-              value={select.name}
-              onChange={changeDish}
-            />
+            <label style={{width: "207px"}} htmlFor="name">Category:</label>
+            {selectCategories()}
           </div>
         </div>
         <div className="modal-footer">
