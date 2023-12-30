@@ -28,7 +28,7 @@ const Categories = () => {
   const incomeCategories = ["salary", "bonus", "interest on deposits"];
   const expenseCategories = ["food", "taxi", "drinks", "relax"];
 
-  const changeDish = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const changeCategory = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setSelect((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -49,7 +49,7 @@ const Categories = () => {
           className="form-control"
           required
           value={select.name}
-          onChange={changeDish}
+          onChange={changeCategory}
         >
           <option disabled value="">
             Тип категории
@@ -68,7 +68,7 @@ const Categories = () => {
           className="form-control"
           required
           value={select.name}
-          onChange={changeDish}
+          onChange={changeCategory}
         >
           <option disabled value="">
             Тип категории
@@ -111,7 +111,7 @@ const Categories = () => {
             <select
               name="type" required
               value={select.type}
-              onChange={changeDish}
+              onChange={changeCategory}
             >
               <option disabled value="">
                 Тип категории
