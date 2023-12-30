@@ -28,7 +28,8 @@ export interface TransactionsTypes{
   id: string;
   date: string;
   category: string;
-  amount: string;
+  amount: number;
+  type: string;
 }
 
 export interface ApiTransactions {

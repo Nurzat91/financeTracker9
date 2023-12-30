@@ -28,6 +28,14 @@ export const fetchTransaction = createAsyncThunk<TransactionsTypes[], undefined,
       });
     }
 
-    return newData;
+    const dataReverse = newData.reverse();
+    return dataReverse;
+  }
+);
+
+export const deleteTransactions = createAsyncThunk<void, string>(
+  'transactions/delete',
+  async (transactionsId) => {
+    await axiosApi.delete(`/transactions/${transactionsId}.json`);
   }
 );
